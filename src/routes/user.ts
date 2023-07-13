@@ -11,8 +11,8 @@ const router = Router();
 
 router.post("/new-user", createUser);
 router.get("/get-users", getUsers);
-router.get("/get-user/:email", getUser);
-router.put("/update-user/:email", updateUser);
-router.delete("/delete-user/:email", deleteUser);
+router.get("/get-user/:id", getUser);
+router.put("/update-user/:id", updateUser);
+router.delete("/delete-user/:id", deleteUser);
 
 export { router as user };

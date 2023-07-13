@@ -1,22 +1,32 @@
 import { Request, Response } from "express";
 import { database } from "../database";
-import User from "../models/User";
+import { User } from "../models";
 import bcrypt from "bcrypt";
+import { IUser } from "../interfaces";
 
 export const getUser = async (req: Request, res: Response) => {
   await database.connect();
-  const { email } = req.params;
+  const { id } = req.params;
+  console.log(id);
   try {
-    const user = User.findOne({ email });
+    const user = await User.findById(id);
     if (!user) {
       await database.disconnect();
       return res.status(400).json({
         success: false,
-        message: "User not found",
+        message: "Usuario no encontrado",
       });
     }
+    const userData: IUser = {
+      _id: user.id,
+      name: user.name,
+      lastName: user.lastName,
+      email: user.email,
+      role: user.role,
+    };
+    await database.disconnect();
     return res.status(200).json({
-      user,
+      user: userData,
     });
   } catch (error) {
     await database.disconnect();
@@ -35,7 +45,7 @@ export const getUsers = async (_req: Request, res: Response) => {
       await database.disconnect();
       return res.status(400).json({
         success: false,
-        message: "Users not found",
+        message: "Usuarios no encontrados",
       });
     }
     return res.status(200).json({
@@ -67,7 +77,7 @@ export const createUser = async (req: Request, res: Response) => {
     await database.disconnect();
     return res.status(201).json({
       success: true,
-      message: "User created successfully",
+      message: "Usuario creado exitosamente",
       user,
     });
   } catch (error) {
@@ -82,21 +92,21 @@ export const createUser = async (req: Request, res: Response) => {
 export const updateUser = async (req: Request, res: Response) => {
   try {
     await database.connect();
-    const { email } = req.params;
-    const user = await User.findByIdAndUpdate({ email }, req.body, {
+    const { id } = req.params;
+    const user = await User.findByIdAndUpdate({ id }, req.body, {
       new: true,
     });
     if (!user) {
       await database.disconnect();
       return res.status(400).json({
         success: false,
-        message: "User not found",
+        message: "Usuario encontrado",
       });
     }
     await database.disconnect();
     return res.status(200).json({
       success: true,
-      message: "User updated successfully",
+      message: "Usuario actualizado exitosamente",
       user,
     });
   } catch (error) {
@@ -111,19 +121,19 @@ export const updateUser = async (req: Request, res: Response) => {
 export const deleteUser = async (req: Request, res: Response) => {
   try {
     await database.connect();
-    const { email } = req.params;
-    const user = await User.findOneAndDelete({ email });
+    const { id } = req.params;
+    const user = await User.findOneAndDelete({ _id: id });
     if (!user) {
       await database.disconnect();
       return res.status(400).json({
         success: false,
-        message: "User not found",
+        message: "No se pudo eliminar el usuario",
       });
     }
     await database.disconnect();
     return res.status(200).json({
       success: true,
-      message: "User deleted successfully",
+      message: "Usuario eliminado exitosamente",
     });
   } catch (error) {
     await database.disconnect();

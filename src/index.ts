@@ -1,7 +1,7 @@
 import express, { Application } from "express";
 import "dotenv/config";
 import "./database/connectDatabase";
-import { user, auth } from "./routes";
+import { user, auth, entry } from "./routes";
 import cors from "cors";
 
 const app: Application = express();
@@ -14,6 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/user", user);
 app.use("/api/auth", auth);
+app.use("/api/entry", entry);
 
 /* app.get('/ping', (_req, res) => {
     console.log('funcionaaaa');
