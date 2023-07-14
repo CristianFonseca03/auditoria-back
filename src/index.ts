@@ -1,8 +1,10 @@
 import express, { Application } from "express";
+import cors from "cors";
+
 import "dotenv/config";
+
 import "./database/connectDatabase";
 import { user, auth, entry } from "./routes";
-import cors from "cors";
 
 const app: Application = express();
 

@@ -9,10 +9,9 @@ import { transporter } from "../helpers";
 
 export const getUser = async (req: Request, res: Response) => {
   await database.connect();
-  const { id } = req.params;
-  console.log(id);
+  const { email } = req.params;
   try {
-    const user = await User.findById(id);
+    const user = await User.findOne({ email });
     if (!user) {
       await database.disconnect();
       return res.status(400).json({
@@ -98,8 +97,8 @@ export const createUser = async (req: Request, res: Response) => {
 export const updateUser = async (req: Request, res: Response) => {
   try {
     await database.connect();
-    const { id } = req.params;
-    const user = await User.findByIdAndUpdate({ id }, req.body, {
+    const { email } = req.params;
+    const user = await User.findOneAndUpdate({ email }, req.body, {
       new: true,
     });
     if (!user) {
@@ -127,8 +126,8 @@ export const updateUser = async (req: Request, res: Response) => {
 export const deleteUser = async (req: Request, res: Response) => {
   try {
     await database.connect();
-    const { id } = req.params;
-    const user = await User.findOneAndDelete({ _id: id });
+    const { email } = req.params;
+    const user = await User.findOneAndDelete({ email });
     if (!user) {
       await database.disconnect();
       return res.status(400).json({
