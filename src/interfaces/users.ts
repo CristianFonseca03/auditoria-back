@@ -5,6 +5,10 @@ export interface IUser {
   email: string;
   password?: string;
   role: IUserRole;
+  status: boolean;
+  firstLogin: boolean;
+  attempts: number;
+  oldPassword?: string;
 }
 
 export type IUserRole = "admin" | "client";
