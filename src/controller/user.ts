@@ -4,14 +4,16 @@ import { generate } from "generate-password-ts";
 import { Request, Response } from "express";
 import { database } from "../database";
 import { User } from "../models";
-import { IUser } from "../interfaces";
 import { transporter } from "../helpers";
 
 export const getUser = async (req: Request, res: Response) => {
   await database.connect();
-  const { email } = req.params;
+  const { email } = req.body;
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne(
+      { email },
+      { password: 0, __v: 0, oldPassword: 0 }
+    );
     if (!user) {
       await database.disconnect();
       return res.status(400).json({
@@ -19,19 +21,9 @@ export const getUser = async (req: Request, res: Response) => {
         message: "Usuario no encontrado",
       });
     }
-    const userData: IUser = {
-      _id: user.id,
-      name: user.name,
-      lastName: user.lastName,
-      email: user.email,
-      role: user.role,
-      status: user.status,
-      firstLogin: user.firstLogin,
-      attempts: user.attempts,
-    };
     await database.disconnect();
     return res.status(200).json({
-      user: userData,
+      user,
     });
   } catch (error) {
     await database.disconnect();
@@ -45,7 +37,7 @@ export const getUser = async (req: Request, res: Response) => {
 export const getUsers = async (_req: Request, res: Response) => {
   try {
     await database.connect();
-    const users = await User.find({});
+    const users = await User.find({}, { password: 0, __v: 0, oldPassword: 0 });
     if (!users) {
       await database.disconnect();
       return res.status(400).json({
@@ -97,7 +89,7 @@ export const createUser = async (req: Request, res: Response) => {
 export const updateUser = async (req: Request, res: Response) => {
   try {
     await database.connect();
-    const { email } = req.params;
+    const { email } = req.body;
     const user = await User.findOneAndUpdate({ email }, req.body, {
       new: true,
     });
@@ -126,7 +118,7 @@ export const updateUser = async (req: Request, res: Response) => {
 export const deleteUser = async (req: Request, res: Response) => {
   try {
     await database.connect();
-    const { email } = req.params;
+    const { email } = req.body;
     const user = await User.findOneAndDelete({ email });
     if (!user) {
       await database.disconnect();

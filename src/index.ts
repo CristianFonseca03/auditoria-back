@@ -4,7 +4,7 @@ import cors from "cors";
 import "dotenv/config";
 
 import "./database/connectDatabase";
-import { user, auth, entry } from "./routes";
+import { user, auth, entry, admin } from "./routes";
 
 const app: Application = express();
 
@@ -15,6 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/user", user);
+app.use("/api/admin", admin);
 app.use("/api/auth", auth);
 app.use("/api/entry", entry);
 
