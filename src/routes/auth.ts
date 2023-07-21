@@ -18,21 +18,21 @@ router.post(
   [
     check("name")
       .notEmpty()
-      .withMessage("The name is required")
+      .withMessage("El nombre es requerido")
       .matches(/^[a-zA-Z ]+$/)
-      .withMessage("The name is invalid (only letters and spaces)"),
+      .withMessage("El nombre no es válido (sólo letras y espacios)"),
     check("lastName")
       .notEmpty()
-      .withMessage("The last name is required ")
+      .withMessage("El apellido es requerido ")
       .matches(/^[a-zA-Z ]+$/)
-      .withMessage("The last name is invalid (only letters and spaces)"),
+      .withMessage("El apellido no es válido (sólo letras y espacios)"),
     check("email")
       .notEmpty()
-      .withMessage("The email is required")
+      .withMessage("El correo es requerido")
       .isEmail()
-      .withMessage("The email is invalid")
+      .withMessage("El correo no es válido")
       .isLength({ max: 40 })
-      .withMessage("The email is very long (max 40 characters)"),
+      .withMessage("El correo no puede tener más de 40 caracteres"),
     validate,
   ],
   signUp
@@ -43,10 +43,10 @@ router.post(
   [
     check("email")
       .notEmpty()
-      .withMessage("The email is required")
+      .withMessage("El correo es requerido")
       .isEmail()
-      .withMessage("The email is invalid"),
-    check("password", "The password is required").notEmpty(),
+      .withMessage("El correo no es válido"),
+    check("password", "La contraseña es requerida").notEmpty(),
     validate,
   ],
   signIn
@@ -57,15 +57,15 @@ router.patch(
   [
     param("email")
       .exists()
-      .withMessage("The email is required")
+      .withMessage("El correo es requerido")
       .isEmail()
-      .withMessage("The email is invalid"),
+      .withMessage("El correo no es válido"),
     check("newPassword")
       .notEmpty()
-      .withMessage("The new password is required")
+      .withMessage("La nueva contraseña es requerida")
       .isStrongPassword(passwordOptions)
       .withMessage(
-        "The new password is not strong enough (min 8 characters, at least one uppercase, one lowercase, one number and one special character)"
+        "La nueva contraseña no es lo suficientemente segura (mínimo 8 caracteres, al menos una mayúscula, una minúscula, un número y un carácter especial)"
       ),
     validate,
   ],
@@ -75,19 +75,5 @@ router.patch(
 router.get("/validate-jwt", validateToken, revalidateToken);
 
 router.get("/renew", validateToken, renewToken);
-
-/* router.post(
-  "/sign-in",
-  [
-    check("email")
-      .notEmpty()
-      .withMessage("The email is required")
-      .isEmail()
-      .withMessage("The email is invalid"),
-    check("password", "The password is required").notEmpty(),
-    validate,
-  ],
-  signIn
-); */
 
 export { router as auth };
