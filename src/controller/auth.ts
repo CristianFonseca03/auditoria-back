@@ -56,7 +56,7 @@ export const signIn = async (req: Request, res: Response) => {
 
     return res.status(200).json({
       ok: true,
-      msg: "Usuario creado correctamente",
+      msg: "Usuario logeado exitosamente",
       user: {
         firstLogin: user.firstLogin,
       },
