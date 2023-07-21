@@ -2,7 +2,6 @@ import { Router } from "express";
 import { check } from "express-validator";
 
 import {
-  createUser,
   getUser,
   getUsers,
   updateUser,
@@ -13,8 +12,8 @@ import { validate } from "../middlewares";
 
 const router = Router();
 
-router.post("/new-user", createUser);
 router.get("/get-users", getUsers);
+
 router.get(
   "/get-user/:email",
   [
@@ -42,6 +41,7 @@ router.put(
   ],
   updateUser
 );
+
 router.delete(
   "/delete-user/:email",
   [
@@ -54,6 +54,7 @@ router.delete(
   ],
   deleteUser
 );
+
 router.post(
   "/forgot-password",
   [

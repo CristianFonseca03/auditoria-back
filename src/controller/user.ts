@@ -57,35 +57,6 @@ export const getUsers = async (_req: Request, res: Response) => {
   }
 };
 
-export const createUser = async (req: Request, res: Response) => {
-  try {
-    await database.connect();
-    const { name, lastName, email, password, role } = req.body;
-    const hashPassword = await bcrypt.hash(password, 10);
-
-    const user = new User({
-      name,
-      lastName,
-      email,
-      password: hashPassword,
-      role,
-    });
-    await user.save();
-    await database.disconnect();
-    return res.status(201).json({
-      success: true,
-      message: "Usuario creado exitosamente",
-      user,
-    });
-  } catch (error) {
-    await database.disconnect();
-    return res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
-
 export const updateUser = async (req: Request, res: Response) => {
   try {
     await database.connect();
