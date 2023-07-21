@@ -15,7 +15,7 @@ export const signIn = async (req: Request, res: Response) => {
     if (!user)
       return res.status(400).json({
         success: false,
-        message: "The email is not registered",
+        message: "El correo no está registrado",
       });
 
     const validPassword = compareSync(password, user.password as string);
@@ -72,14 +72,13 @@ export const signIn = async (req: Request, res: Response) => {
 };
 
 export const signUp = async (req: Request, res: Response) => {
+  const { email } = req.body;
   try {
-    await database.connect();
-    const { email } = req.body;
     let user = await User.findOne({ email });
     if (user)
       return res.status(400).json({
-        ok: false,
-        msg: "El correo ya está registrado",
+        success: false,
+        message: "El correo ya está en uso",
       });
 
     user = new User(req.body);
@@ -104,8 +103,7 @@ export const signUp = async (req: Request, res: Response) => {
     user.password = hashSync(aleatoryPassword, salt);
     await user.save();
 
-    /* Tal vez haya que corregir acá */
-    user.oldPassword!.push(user.password);
+    user.oldPassword?.push(user.password);
     await user.save();
 
     const mailOptions = {
@@ -119,18 +117,18 @@ export const signUp = async (req: Request, res: Response) => {
 
     transporter.sendMail(mailOptions, (err, info) => {
       if (err) console.log(err);
-      else console.log(`Email sent: ${info.response}`);
+      else console.log(`Correo enviado: ${info.response}`);
     });
 
     return res.status(201).json({
       success: true,
       message: "Usuario creado correctamente",
     });
-  } catch (error) {
-    await database.disconnect();
+  } catch (error: any) {
     return res.status(500).json({
-      ok: false,
-      msg: error.message,
+      success: false,
+      message: "Algo salió mal",
+      error: error.message,
     });
   }
 };
