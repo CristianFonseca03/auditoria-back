@@ -8,7 +8,7 @@ export interface IUser {
   status: boolean;
   firstLogin: boolean;
   attempts: number;
-  oldPassword?: string;
+  oldPassword?: string[];
 }
 
 export type IUserRole = "admin" | "client";

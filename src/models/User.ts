@@ -30,7 +30,6 @@ const userSchema = new Schema(
     },
     oldPassword: {
       type: String,
-      default: "",
       require: false,
     },
   },

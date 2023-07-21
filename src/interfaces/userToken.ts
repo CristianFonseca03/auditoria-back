@@ -5,4 +5,6 @@ export interface IUserToken {
   email: string;
   role: string;
   status: boolean;
+  firstLogin: boolean;
+  attempts: number;
 }
