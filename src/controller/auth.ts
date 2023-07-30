@@ -26,15 +26,15 @@ export const signIn = async (req: Request, res: Response) => {
         await user.save();
       }
       return res.status(400).json({
-        ok: false,
-        msg: "Correo o contraseña incorrecta",
+        success: false,
+        message: "Correo o contraseña incorrecta",
       });
     }
 
     if (user.status === false) {
       res.status(400).json({
-        ok: false,
-        msg: "Usuario bloqueado",
+        success: false,
+        message: "Usuario bloqueado",
       });
     }
 
@@ -55,8 +55,8 @@ export const signIn = async (req: Request, res: Response) => {
     const token: string | undefined = await generateJWT(userData);
 
     return res.status(200).json({
-      ok: true,
-      msg: "Usuario logeado exitosamente",
+      success: true,
+      message: "Usuario logeado exitosamente",
       user: {
         firstLogin: user.firstLogin,
       },
@@ -65,8 +65,8 @@ export const signIn = async (req: Request, res: Response) => {
   } catch (error) {
     await database.disconnect();
     return res.status(500).json({
-      ok: false,
-      msg: error.message,
+      success: false,
+      message: error.message,
     });
   }
 };
@@ -103,14 +103,14 @@ export const signUp = async (req: Request, res: Response) => {
     user.password = hashSync(aleatoryPassword, salt);
     await user.save();
 
-    user.oldPassword?.push(user.password);
+    user.oldPassword.push(user.password);
     await user.save();
 
     const mailOptions = {
-      from: "ADMIN - JIRA APP",
+      from: "ADMIN - SECURE DOCS",
       to: user.email,
-      subject: "Bienvenido a JIRA APP 👋",
-      html: `<h1>Bienvenido a JIRA APP</h1>
+      subject: "Bienvenido a SECURE DOCS 👋",
+      html: `<h1>Bienvenido a SECURE DOCS</h1>
       <p>Tu constraseña generada es: <strong>${aleatoryPassword}</strong></p>
       <p><strong>Por favor, cámbielo después de iniciar sesión</strong></p>`,
     };
@@ -140,25 +140,25 @@ export const updatePassword = async (req: Request, res: Response) => {
     let user = await User.findOne({ email });
     if (!user)
       return res.status(400).json({
-        ok: false,
-        msg: "El correo no está registrado",
+        success: false,
+        message: "El correo no está registrado",
       });
 
-    const result = user.oldPassword?.some((old) =>
+    const result = user.oldPassword.some((old) =>
       compareSync(newPassword, old)
     );
     if (result) {
       return res.status(400).json({
-        ok: false,
-        msg: "La contraseña es la misma que la anterior",
+        success: false,
+        message: "La contraseña es la misma que la anterior",
       });
     } else {
-      if (user.oldPassword?.length === 2) user.oldPassword.pop();
+      if (user.oldPassword.length === 2) user.oldPassword.pop();
     }
 
     const salt = genSaltSync(10);
     user.password = hashSync(newPassword, salt);
-    user.oldPassword?.unshift(user.password);
+    user.oldPassword.unshift(user.password);
     user.firstLogin = false;
     await user.save();
 
@@ -176,8 +176,8 @@ export const updatePassword = async (req: Request, res: Response) => {
     const token = await generateJWT(userData);
 
     return res.status(200).json({
-      ok: true,
-      msg: "Contraseña actualizada correctamente",
+      success: true,
+      message: "Contraseña actualizada correctamente",
       token,
     });
   } catch (error) {
