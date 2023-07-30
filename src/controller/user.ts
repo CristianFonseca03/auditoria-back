@@ -140,9 +140,9 @@ export const forgotPassword = async (req: Request, res: Response) => {
     await user.save();
 
     const mailOptions = {
-      from: "ADMIN - JIRA",
+      from: "ADMIN - SECURE DOCS",
       to: user.email,
-      subject: `Hola ${user.name} 👋 Olvidaste tu contraseña en Jira`,
+      subject: `Hola ${user.name} 👋 Olvidaste tu contraseña en SECURE DOCS`,
       html: `<h1>Crear nueva contraseña</h1>
           <p>Tu nueva contraseña es: <strong>${aleatoryPassword}</strong></p>
           <p><strong>Por favor, cámbielo después de iniciar sesión</strong></p>`,
@@ -150,17 +150,17 @@ export const forgotPassword = async (req: Request, res: Response) => {
 
     transporter.sendMail(mailOptions, (err, info) => {
       if (err) console.log(err);
-      else console.log(`Email sent: ${info.response}`);
+      else console.log(`Correo enviado a: ${info.response}`);
     });
 
     return res.status(200).json({
       success: true,
-      message: "Your new password has been sent to your email",
+      message: "Tu nueva contraseña va a ser enviada a tu correo electrónico",
     });
   } catch (error: any) {
     return res.status(500).json({
       success: false,
-      message: "Something went wrong",
+      message: "Algo salió mal",
       error: error.message,
     });
   }

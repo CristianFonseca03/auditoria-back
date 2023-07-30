@@ -103,14 +103,14 @@ export const signUp = async (req: Request, res: Response) => {
     user.password = hashSync(aleatoryPassword, salt);
     await user.save();
 
-    user.oldPassword.push(user.password);
+    user.oldPassword?.push(user.password);
     await user.save();
 
     const mailOptions = {
-      from: "ADMIN - SECURE DOCS",
+      from: "ADMIN - JIRA APP",
       to: user.email,
-      subject: "Bienvenido a SECURE DOCS 👋",
-      html: `<h1>Bienvenido a SECURE DOCS</h1>
+      subject: "Bienvenido a JIRA APP 👋",
+      html: `<h1>Bienvenido a JIRA APP</h1>
       <p>Tu constraseña generada es: <strong>${aleatoryPassword}</strong></p>
       <p><strong>Por favor, cámbielo después de iniciar sesión</strong></p>`,
     };
@@ -144,7 +144,7 @@ export const updatePassword = async (req: Request, res: Response) => {
         message: "El correo no está registrado",
       });
 
-    const result = user.oldPassword.some((old) =>
+    const result = user.oldPassword?.some((old) =>
       compareSync(newPassword, old)
     );
     if (result) {
@@ -153,12 +153,12 @@ export const updatePassword = async (req: Request, res: Response) => {
         message: "La contraseña es la misma que la anterior",
       });
     } else {
-      if (user.oldPassword.length === 2) user.oldPassword.pop();
+      if (user.oldPassword?.length === 2) user.oldPassword.pop();
     }
 
     const salt = genSaltSync(10);
     user.password = hashSync(newPassword, salt);
-    user.oldPassword.unshift(user.password);
+    user.oldPassword?.unshift(user.password);
     user.firstLogin = false;
     await user.save();
 
