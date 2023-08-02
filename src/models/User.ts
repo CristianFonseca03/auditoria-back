@@ -28,10 +28,12 @@ const userSchema = new Schema(
       type: Number,
       default: 0,
     },
-    oldPassword: {
-      type: String,
-      require: false,
-    },
+    oldPassword: [
+      {
+        type: String,
+        require: false,
+      },
+    ],
   },
   {
     timestamps: true,
