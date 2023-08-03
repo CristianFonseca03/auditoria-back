@@ -119,13 +119,13 @@ export const forgotPassword = async (req: Request, res: Response) => {
     if (!user)
       return res.status(400).json({
         success: false,
-        message: "The user is not registered",
+        message: "El usuario no está registrado",
       });
 
     if (user.attempts === 3)
       return res.status(400).json({
         success: false,
-        message: "Your account has been blocked contact with the administrator",
+        message: "Tu cuenta ha sido bloqueada, contacta al administrador",
       });
 
     const aleatoryPassword: string = generate({
