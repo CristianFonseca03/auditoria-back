@@ -108,10 +108,10 @@ export const signUp = async (req: Request, res: Response) => {
     await user.save();
 
     const mailOptions = {
-      from: "ADMIN - SECURE DOCS",
+      from: "ADMIN - JIRA APP",
       to: user.email,
-      subject: "Bienvenido a SECURE DOCS 👋",
-      html: `<h1>Bienvenido a SECURE DOCS</h1>
+      subject: "Bienvenido a JIRA APP 👋",
+      html: `<h1>Bienvenido a JIRA APP</h1>
       <p>Tu constraseña generada es: <strong>${aleatoryPassword}</strong></p>
       <p><strong>Por favor, cámbielo después de iniciar sesión</strong></p>`,
     };
@@ -193,7 +193,7 @@ export const updatePassword = async (req: Request, res: Response) => {
 export const revalidateToken = async (_req: Request, res: Response) => {
   return res.status(200).json({
     success: true,
-    message: "Token revalidated successfully",
+    message: "Token revalidado exitosamente",
   });
 };
 
