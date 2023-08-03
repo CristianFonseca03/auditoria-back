@@ -5,6 +5,7 @@ import "dotenv/config";
 
 import "./database/connectDatabase";
 import { user, auth, entry, admin, document } from "./routes";
+import { requestLogger } from "./middlewares";
 
 const app: Application = express();
 
@@ -13,6 +14,8 @@ app.set("port", process.env.PORT || 5000);
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(requestLogger);
 
 app.use("/api/user", user);
 app.use("/api/admin", admin);
