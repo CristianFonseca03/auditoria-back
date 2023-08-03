@@ -4,7 +4,7 @@ import cors from "cors";
 import "dotenv/config";
 
 import "./database/connectDatabase";
-import { user, auth, entry, admin } from "./routes";
+import { user, auth, entry, admin, document } from "./routes";
 
 const app: Application = express();
 
@@ -18,6 +18,7 @@ app.use("/api/user", user);
 app.use("/api/admin", admin);
 app.use("/api/auth", auth);
 app.use("/api/entry", entry);
+app.use("/api/documents", document);
 
 /* app.get('/ping', (_req, res) => {
     console.log('funcionaaaa');
