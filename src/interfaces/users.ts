@@ -11,4 +11,4 @@ export interface IUser {
   oldPassword: string[];
 }
 
-export type IUserRole = "admin" | "client";
+export type IUserRole = "admin" | "editor" | "user";

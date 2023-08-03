@@ -59,6 +59,7 @@ export const signIn = async (req: Request, res: Response) => {
       message: "Usuario logeado exitosamente",
       user: {
         firstLogin: user.firstLogin,
+        role: user.role,
       },
       token,
     });
